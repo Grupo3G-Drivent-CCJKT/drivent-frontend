@@ -4,10 +4,15 @@ import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { useState } from 'react';
 import styled from 'styled-components';
+import useCreateTicket from '../../../hooks/api/useCreateTicket';
+import { toast } from 'react-toastify';
 
 export default function Payment() {
   const { enrollment } = useEnrollment();
   const [ modal, setModal] = useState(undefined);
+  const [ ticket, setTicket] = useState(undefined);
+  const { createTicket, createTicketLoading } = useCreateTicket();
+  
   const pageTitle = 'Ingresso e pagamento';
   if (!enrollment) {
     const warning = 'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso';
@@ -21,13 +26,27 @@ export default function Payment() {
   
   let ticketsWithoutHotel = ticketTypes.filter(t => t.includesHotel === false);
 
-  function selectModal(event, ticket) {
+  function selectModal(event, ticketChoice) {
     event.target.selected = !event.target.selected;
-    if (ticket.name === modal) {
+    if (ticketChoice.name === modal) {
       setModal(false);
+      setTicket(undefined);
       return;
     };
-    setModal(ticket.name);
+    setModal(ticketChoice.name);
+    if (ticketChoice.isRemote) setTicket(ticketTypes.find(t => t.id === ticketChoice.id));
+  }
+  function toBRL(value) {
+    return (value/100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  }
+
+  async function submitTicket() {
+    try {
+      await createTicket(ticket.id);
+      toast('Ingresso reservado com sucesso!');
+    } catch (error) {
+      toast(`Falha na reserva do ingresso. ${error.response.data.message}`);
+    }
   }
 
   return (
@@ -35,7 +54,14 @@ export default function Payment() {
       <StyledTypography variant="h4">{pageTitle}</StyledTypography>
       <StyledTypography variant="h6" color='textSecondary'>Primeiro, escolha sua modalidade de ingresso</StyledTypography>
       {ticketsWithoutHotel.map(e => <StyledButton selected={modal === e.name} variant="outlined" onClick={(event) => selectModal(event, e)} key={e.id}>{e.name.split(' ')[0]} <br/>
-        {(e.price/100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</StyledButton>)}
+        {toBRL(e.price)}</StyledButton>)}
+      {ticket && <>
+
+        <StyledTypography variant="h6" color='textSecondary'> 
+        Fechado! O total ficou em {toBRL(ticket.price)}. Agora é só confirmar:
+        </StyledTypography>
+        <Button variant='contained' onClick={submitTicket} disabled={createTicketLoading}>RESERVAR INGRESSO</Button>
+      </>}
     </>
   );
 }  
