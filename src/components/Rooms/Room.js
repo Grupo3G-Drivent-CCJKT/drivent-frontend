@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 import Person from './PersonIcon';
+import { useMemo } from 'react';
 
-export default function Room() {
+export default function Room({ data }) {
+  const { id, name, capacity, hotelId } = data;
+  const roomCapacty = useMemo(() => new Array(capacity).fill(null), [capacity]);
   return (
     <RoomTypeBox>
-      <p>101</p>
+      <p>{name}</p>
       <VacanciesRoomBox>
-        <Person />
+        {roomCapacty.map((el, i) => (
+          <Person key={i} />
+        ))}
       </VacanciesRoomBox>
     </RoomTypeBox>
   );

@@ -1,22 +1,27 @@
+import { useEffect, useState } from 'react';
 import Room from './Room';
 import styled from 'styled-components';
+import * as roomApi from '../../services/roomApi';
+import useToken from '../../hooks/useToken';
 
 export default function RoomsContainer() {
+  const token = useToken();
+  const [rooms, setRooms] = useState(undefined);
+
+  useEffect(async() => {
+    try {
+      const data = await roomApi.getRoomsInformations(3, token);
+      console.log(data);
+      setRooms(data.Rooms);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, []);
+
   return (
     <>
       Ótima pedida! Agora escolha seu quarto:
-      <ContainerWrapper>
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-        <Room />
-      </ContainerWrapper>
+      <ContainerWrapper>{rooms !== undefined && rooms.map((el) => <Room key={el.id} data={el} />)}</ContainerWrapper>
     </>
   );
 }

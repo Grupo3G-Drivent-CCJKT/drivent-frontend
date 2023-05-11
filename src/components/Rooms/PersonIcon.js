@@ -4,7 +4,7 @@ import { BsPersonFill, BsPerson } from 'react-icons/bs';
 export default function Person() {
   return (
     <>
-      <PersonIconFill />
+      {/* <PersonIconFill /> */}
       <PersonIcon />
     </>
   );
