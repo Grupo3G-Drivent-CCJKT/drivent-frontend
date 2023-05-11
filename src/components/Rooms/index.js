@@ -11,7 +11,6 @@ export default function RoomsContainer() {
   useEffect(async() => {
     try {
       const data = await roomApi.getRoomsInformations(3, token);
-      console.log(data);
       setRooms(data.Rooms);
     } catch (error) {
       console.log(error.message);
@@ -21,12 +20,15 @@ export default function RoomsContainer() {
   return (
     <>
       Ótima pedida! Agora escolha seu quarto:
-      <ContainerWrapper>{rooms !== undefined && rooms.map((el) => <Room key={el.id} data={el} />)}</ContainerWrapper>
+      <ContainerWrapper>
+        {rooms !== undefined &&
+          rooms.map((el) => <Room key={el.id} data={el} />)}
+      </ContainerWrapper>
     </>
   );
 }
 
-const ContainerWrapper = styled.form`
+const ContainerWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
