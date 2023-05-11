@@ -12,6 +12,7 @@ export default function Room({ data }) {
   } = data;
   const [disabled, setDisabled] = useState(false);
   const [numberVacacies, setNumberVacacies] = useState([]);
+  const [selected, setSelected] = useState(false);
 
   useEffect(() => {
     if (capacity === occupiedQuantity) setDisabled(true);
@@ -20,24 +21,19 @@ export default function Room({ data }) {
     arr.fill(true, 0, avaliableQauntity);
     arr.fill(false, avaliableQauntity);
     setNumberVacacies(arr);
-  }, [capacity, occupiedQuantity]);
+  }, [selected]);
 
-  // const createRoomCapactyArray = () => {
-  //   const avaliableQauntity = capacity - occupiedQuantity;
-  //   const arr = new Array(avaliableQauntity + occupiedQuantity);
-  //   arr.fill(true, 0, avaliableQauntity);
-  //   arr.fill(false, avaliableQauntity);
-  //   setNumberVacacies(arr);
-  // };
-
-  //useMemo(() => createRoomCapactyArray(), [capacity, occupiedQuantity]);
+  function selectRoom(e) {
+    e.preventDefault();
+    setSelected(!selected);
+  }
 
   return (
-    <RoomTypeBox disabled={disabled}>
+    <RoomTypeBox disabled={disabled} selected={selected} onClick={selectRoom}>
       <p>{name}</p>
       <VacanciesRoomBox>
         {numberVacacies.map((el, i) => (
-          <Person key={i} avaliable={el} disabled={disabled} />
+          <Person key={i} avaliable={el} disabled={disabled} selected={selected && i === 0}/>
         ))}
       </VacanciesRoomBox>
     </RoomTypeBox>
@@ -54,7 +50,7 @@ const RoomTypeBox = styled.button`
   align-items: center;
   justify-content: space-between;
   padding: 12px;
-  background: #fff;
+  background: ${(props) => (props.selected ? '#FFEED2' : '#FFF')};
   > p {
     font-family: 'Roboto';
     font-style: normal;

@@ -28,7 +28,7 @@ export default function RoomsContainer() {
   );
 }
 
-const ContainerWrapper = styled.form`
+const ContainerWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
