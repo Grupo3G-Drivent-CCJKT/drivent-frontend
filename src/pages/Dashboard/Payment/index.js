@@ -16,7 +16,6 @@ export default function Payment() {
   const [ticket, setTicket] = useState(undefined);
   const [ticketTypes, setTicketType] = useState([]);
   const [ticketsWithoutHotel, setTicketsWithoutHotel] = useState([]);
-  const [priceNotRemoteWithoutHotel, setPriceNotRemoteWithoutHotel] = useState([]);
   const [ticketsNotRemote, setTicketsNotRemote] = useState([]);
   const { createTicket, createTicketLoading } = useCreateTicket();
   const token = useToken();
@@ -25,11 +24,13 @@ export default function Payment() {
     const fetchData = async() => {
       const data = await ticketApi.getTicketTypes(token);
       setTicketType(data);
-      const filterTicketsWithoutHotel = ticketTypes.filter(t => t.includesHotel === false);
-      const filterPriceNotRemoteWithoutHotel = ticketTypes.find(t => t.includesHotel === false && t.isRemote === false).price;
-      const filterTicketsNotRemote = ticketTypes.filter(t => t.isRemote === false);
+
+      const filterTicketsWithoutHotel = data.filter(t => t.includesHotel === false);
+      const filterPriceNotRemoteWithoutHotel = data.find(t => t.includesHotel === false && t.isRemote === false).price;
+      const filterTicketsNotRemote = data.filter(t => t.isRemote === false);
+      filterTicketsNotRemote.forEach(e => e.plusPrice = e.price - filterPriceNotRemoteWithoutHotel);
+
       setTicketsWithoutHotel([...filterTicketsWithoutHotel]);
-      setPriceNotRemoteWithoutHotel([...filterPriceNotRemoteWithoutHotel]);
       setTicketsNotRemote([...filterTicketsNotRemote]);
     };
     await fetchData();
@@ -49,7 +50,7 @@ export default function Payment() {
   const ticketsWithoutHotel = ticketTypes.filter(t => t.includesHotel === false);
   const priceNotRemoteWithoutHotel = ticketTypes.find(t => t.includesHotel === false && t.isRemote === false).price;
   const ticketsNotRemote = ticketTypes.filter(t => t.isRemote === false);*/
-  ticketsNotRemote.forEach(e => e.plusPrice = e.price - priceNotRemoteWithoutHotel);
+
   function selectModal(ticketChoice) {
     if (ticketChoice.isRemote === modal) {
       setModal(undefined);
