@@ -8,7 +8,7 @@ import { Typography } from '@material-ui/core';
 import useCreateBooking from '../../hooks/api/useCreateBooking';
 import { toast } from 'react-toastify';
 
-export default function RoomsContainer() {
+export default function RoomsContainer({ hotelId }) {
   const token = useToken();
   const [rooms, setRooms] = useState(undefined);
   const [selectedButton, setSelectedButton] = useState(null);
@@ -17,12 +17,12 @@ export default function RoomsContainer() {
 
   useEffect(async() => {
     try {
-      const data = await roomApi.getRoomsInformations(3, token);
-      setRooms(data.Rooms);
+      const data = await roomApi.getRoomsInformations(hotelId, token);
+      setRooms(data);
     } catch (error) {
       console.log(error.message);
     }
-  }, []);
+  }, [hotelId]);
 
   function handleButtonClick(id) {
     if (selectedButton !== id) {
@@ -53,7 +53,6 @@ export default function RoomsContainer() {
               key={el.id}
               data={el}
               selected={selectedButton === el.id ? true : false}
-              //onClick={(e) => handleButtonClick(e, el.id)}
               onRoomSelect={handleButtonClick}
             />
           ))}
