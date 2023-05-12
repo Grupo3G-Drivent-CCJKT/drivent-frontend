@@ -69,7 +69,7 @@ export default function Payment() {
     <>
       <StyledTypography variant="h4">{pageTitle}</StyledTypography>
       <StyledTypography variant="h6" color='textSecondary'>Primeiro, escolha sua modalidade de ingresso</StyledTypography>
-      {ticketsWithoutHotel.map(e => <StyledButton selected={modal === e.isRemote} variant="outlined" onClick={() => selectModal(e)} key={e.id}>{e.name.split(' ')[0]} <br/>
+      {ticketsWithoutHotel.map(e => <StyledButton selected={modal === e.isRemote} variant="outlined" onClick={() => selectModal(e)} key={e.id}>{e.isRemote? 'Online': 'Presencial'} <br/>
         {toBRL(e.price)}</StyledButton>)}
       {modal === false && 
       <>
@@ -77,7 +77,7 @@ export default function Payment() {
         Ótimo! Agora escolha sua modalidade de hospedagem
         </StyledTypography>
         {
-          ticketsNotRemote.map(e => <StyledButton selected={hotel === e.includesHotel} variant="outlined" onClick={() => selectHotel(e)} key={e.id}>{e.name.split(' ')[0]} <br/>
+          ticketsNotRemote.map(e => <StyledButton selected={hotel === e.includesHotel} variant="outlined" onClick={() => selectHotel(e)} key={e.id}>{e.includesHotel? 'Com Hotel': 'Sem Hotel'} <br/>
         + {toBRL(e.plusPrice)}</StyledButton>)
         }
       </>
@@ -99,6 +99,8 @@ const StyledTypography = styled(Typography)`
 const StyledButton = styled(Button)`
     margin-right: 20px!important;
     border-radius: 20px!important;
+    text-transform:none!important;
+    font-size: 16px!important;
     width: 145px;
     aspect-ratio: 1;
     ${props => props.selected ? 'background-color: #FFEED2!important;' : ' '}
