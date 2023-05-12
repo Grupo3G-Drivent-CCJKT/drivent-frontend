@@ -14,7 +14,7 @@ export default function Room({ data, selected, onRoomSelect }) {
   const [disabled, setDisabled] = useState(false);
   const [numberVacacies, setNumberVacacies] = useState([]);
 
-  function numberVacancies(capacity, occupiedQuantity){
+  function numberVacancies(capacity, occupiedQuantity) {
     if (capacity === occupiedQuantity) setDisabled(true);
     const avaliableQauntity = capacity - occupiedQuantity;
     const arr = new Array(avaliableQauntity + occupiedQuantity);
@@ -23,8 +23,10 @@ export default function Room({ data, selected, onRoomSelect }) {
     setNumberVacacies(arr);
   }
 
-  useMemo(()=>{numberVacancies(capacity, occupiedQuantity)},[capacity, occupiedQuantity])
-  
+  useMemo(() => {
+    numberVacancies(capacity, occupiedQuantity);
+  }, [capacity, occupiedQuantity]);
+
   // useEffect(() => {
   //   if (capacity === occupiedQuantity) setDisabled(true);
   //   const avaliableQauntity = capacity - occupiedQuantity;

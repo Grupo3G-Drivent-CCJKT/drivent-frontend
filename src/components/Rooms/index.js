@@ -3,6 +3,7 @@ import Room from './Room';
 import styled from 'styled-components';
 import * as roomApi from '../../services/roomApi';
 import useToken from '../../hooks/useToken';
+import Button from '@material-ui/core/Button';
 
 export default function RoomsContainer() {
   const token = useToken();
@@ -41,6 +42,7 @@ export default function RoomsContainer() {
             />
           ))}
       </ContainerWrapper>
+      {selectedButton !== null && <Button variant="contained">RESERVAR QUARTO</Button>}
     </>
   );
 }
