@@ -2,29 +2,42 @@ import WarningPage from '../../../components/WarningPage';
 import useEnrollment from '../../../hooks/api/useEnrollment';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import useCreateTicket from '../../../hooks/api/useCreateTicket';
 import { toast } from 'react-toastify';
-
+import useToken from '../../../hooks/useToken';
+import * as ticketApi from '../../../services/ticketApi';
 export default function Payment() {
   const { enrollment } = useEnrollment();
   const [ modal, setModal] = useState(undefined); // true for Online or false for In-person
   const [ hotel, setHotel] = useState(undefined); // true for withHotel or false for withoutHotel
   const [ ticket, setTicket] = useState(undefined);
   const { createTicket, createTicketLoading } = useCreateTicket();
-  
+  const [ticketTypes, setTicketType] = useState([]);
+  const [ticketsWithoutHotel, setTicketsWithoutHotel] = useState(undefined);
+  const [inPersonTickets, setInPersonTickets] = useState(undefined);
+  const token = useToken();
   const pageTitle = 'Ingresso e pagamento';
+
+  useEffect(async() => {
+    const fetchData = async() => {
+      const data = await ticketApi.getTicketTypes(token);
+      setTicketType(data);
+      const filterTicketsWithoutHotel = data.filter(t => t.includesHotel === false);
+      const filterInPersonTickets = data.filter(t => t.isRemote === false);
+      setInPersonTickets([...filterInPersonTickets]);
+      setTicketsWithoutHotel([...filterTicketsWithoutHotel]);
+    };
+    await fetchData();
+  }, []);
+
   if (!enrollment) {
     const warning = 'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso';
 
-    return <WarningPage warning={warning} pageTitle={pageTitle}/>;
+    return <WarningPage warning={warning} pageTitle={pageTitle} />;
   }
 
-  let ticketTypes = [{ id: 76, name: 'Online', price: 20000, isRemote: true, includesHotel: false },
-    { id: 77, name: 'Presencial sem hotel', price: 40000, isRemote: false, includesHotel: false },
-    { id: 78, name: 'Presencial com hotel', price: 60000, isRemote: false, includesHotel: true }];
-  
   const ticketsWithoutHotel = ticketTypes.filter(t => t.includesHotel === false);
   const priceNotRemoteWithoutHotel = ticketTypes.find(t => t.includesHotel === false && t.isRemote === false).price;
   const ticketsNotRemote = ticketTypes.filter(t => t.isRemote === false);
@@ -45,8 +58,9 @@ export default function Payment() {
     else (setTicket(undefined));
   }
   function toBRL(value) {
-    return (value/100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return (value / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
+
   function selectHotel(ticketChoice) {
     if (ticketChoice.includesHotel === hotel) {
       setHotel(undefined);
@@ -56,6 +70,7 @@ export default function Payment() {
     setHotel(ticketChoice.includesHotel);
     setTicket(ticketTypes.find(t => t.id === ticketChoice.id));
   }
+  
   async function submitTicket() {
     try {
       await createTicket(ticket.id);
@@ -71,6 +86,15 @@ export default function Payment() {
       <StyledTypography variant="h6" color='textSecondary'>Primeiro, escolha sua modalidade de ingresso</StyledTypography>
       {ticketsWithoutHotel.map(e => <StyledButton selected={modal === e.isRemote} variant="outlined" onClick={() => selectModal(e)} key={e.id}>{e.isRemote? 'Online': 'Presencial'} <br/>
         {toBRL(e.price)}</StyledButton>)}
+      {inPersonTickets && inPersonTickets.map(e => <StyledButton 
+        selected={modal === e.name} 
+        variant="outlined" 
+        onClick={(event) => selectModal(event, e)} 
+        key={e.id}>
+        {e.name.split(' ')[0]}
+        <br/>
+        {toBRL(e.price)}
+      </StyledButton>)}
       {modal === false && 
       <>
         <StyledTypography variant="h6" color='textSecondary'> 
@@ -90,12 +114,10 @@ export default function Payment() {
       </>}
     </>
   );
-}  
-
+}
 const StyledTypography = styled(Typography)`
   margin: 20px 0 !important;
 `;
-
 const StyledButton = styled(Button)`
     margin-right: 20px!important;
     border-radius: 20px!important;
