@@ -25,7 +25,7 @@ export default function Hotel() {
       <Title variant='h4'>Escolha de hotel e quarto</Title>
       <SubTitle variant='h6'>Primeiro, escolha seu hotel</SubTitle>
       <Hotels data={hotels} hotelSelected={hotelSelected} handleChange={handleSelectedHotel} />
-      {hotelSelected && <RoomsContainer/>}
+      {hotelSelected && <RoomsContainer hotelId={hotelSelected.id}/>}
     </>
   );
 }
