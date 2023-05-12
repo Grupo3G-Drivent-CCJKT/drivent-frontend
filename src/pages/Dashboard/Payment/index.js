@@ -15,10 +15,21 @@ export default function Payment() {
   const [ticket, setTicket] = useState(undefined);
   const { createTicket, createTicketLoading } = useCreateTicket();
   const [ticketTypes, setTicketType] = useState([]);
-  const [ticketsWithoutHotel, setTicketsWithoutHotel] = useState([]);
+  const [ticketsWithoutHotel, setTicketsWithoutHotel] = useState(undefined);
   const token = useToken();
-
   const pageTitle = 'Ingresso e pagamento';
+
+  useEffect(async() => {
+    const fetchData = async() => {
+      const data = await ticketApi.getTicketTypes(token);
+      // const json = await data.json();
+      setTicketType(data);
+      const filterTicketsWithoutHotel = data.filter(t => t.includesHotel === false);
+      setTicketsWithoutHotel([...filterTicketsWithoutHotel]);
+    };
+    await fetchData();
+  }, []);
+
   if (!enrollment) {
     const warning = 'Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso';
 
@@ -48,23 +59,11 @@ export default function Payment() {
     }
   }
 
-  useEffect(() => {
-    const fetchData = async() => {
-      const data = await ticketApi.getTicketTypes(token);
-      const json = await data.json();
-      setTicketType(json);
-      const ticketsWithoutHotel = ticketTypes.filter(t => t.includesHotel === false);
-      setTicketsWithoutHotel([...ticketsWithoutHotel]);
-    };
-
-    fetchData();
-  }, []);
-
   return (
     <>
       <StyledTypography variant="h4">{pageTitle}</StyledTypography>
       <StyledTypography variant="h6" color='textSecondary'>Primeiro, escolha sua modalidade de ingresso</StyledTypography>
-      {ticketsWithoutHotel.map(e => <StyledButton selected={modal === e.name} variant="outlined" onClick={(event) => selectModal(event, e)} key={e.id}>{e.name.split(' ')[0]} <br />
+      {ticketsWithoutHotel && ticketsWithoutHotel.map(e => <StyledButton selected={modal === e.name} variant="outlined" onClick={(event) => selectModal(event, e)} key={e.id}>{e.name.split(' ')[0]} <br />
         {toBRL(e.price)}</StyledButton>)}
       {ticket && <>
 
