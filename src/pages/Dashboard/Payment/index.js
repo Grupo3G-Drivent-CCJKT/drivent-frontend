@@ -9,7 +9,8 @@ import { toast } from 'react-toastify';
 
 export default function Payment() {
   const { enrollment } = useEnrollment();
-  const [ modal, setModal] = useState(undefined);
+  const [ modal, setModal] = useState(undefined); // true for Online or false for In-person
+  const [ hotel, setHotel] = useState(undefined); // true for withHotel or false for withoutHotel
   const [ ticket, setTicket] = useState(undefined);
   const { createTicket, createTicketLoading } = useCreateTicket();
   
@@ -20,26 +21,41 @@ export default function Payment() {
     return <WarningPage warning={warning} pageTitle={pageTitle}/>;
   }
 
-  let ticketTypes = [{ id: 1, name: 'Online', price: 20000, isRemote: true, includesHotel: false },
-    { id: 2, name: 'Presencial sem hotel', price: 40000, isRemote: false, includesHotel: false },
-    { id: 3, name: 'Presencial com hotel', price: 60000, isRemote: false, includesHotel: true }];
+  let ticketTypes = [{ id: 76, name: 'Online', price: 20000, isRemote: true, includesHotel: false },
+    { id: 77, name: 'Presencial sem hotel', price: 40000, isRemote: false, includesHotel: false },
+    { id: 78, name: 'Presencial com hotel', price: 60000, isRemote: false, includesHotel: true }];
   
-  let ticketsWithoutHotel = ticketTypes.filter(t => t.includesHotel === false);
-
-  function selectModal(event, ticketChoice) {
-    event.target.selected = !event.target.selected;
-    if (ticketChoice.name === modal) {
-      setModal(false);
+  const ticketsWithoutHotel = ticketTypes.filter(t => t.includesHotel === false);
+  const priceNotRemoteWithoutHotel = ticketTypes.find(t => t.includesHotel === false && t.isRemote === false).price;
+  const ticketsNotRemote = ticketTypes.filter(t => t.isRemote === false);
+  ticketsNotRemote.forEach(e => e.plusPrice = e.price - priceNotRemoteWithoutHotel);
+  function selectModal(ticketChoice) {
+    if (ticketChoice.isRemote === modal) {
+      setModal(undefined);
+      setHotel(undefined);
       setTicket(undefined);
       return;
-    };
-    setModal(ticketChoice.name);
-    if (ticketChoice.isRemote) setTicket(ticketTypes.find(t => t.id === ticketChoice.id));
+    }; 
+    setModal(ticketChoice.isRemote);
+    if (ticketChoice.isRemote) {
+      setTicket(ticketTypes.find(t => t.id === ticketChoice.id));
+      setHotel(undefined);
+    }
+    
+    else (setTicket(undefined));
   }
   function toBRL(value) {
     return (value/100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
-
+  function selectHotel(ticketChoice) {
+    if (ticketChoice.includesHotel === hotel) {
+      setHotel(undefined);
+      setTicket(undefined);
+      return;
+    };
+    setHotel(ticketChoice.includesHotel);
+    setTicket(ticketTypes.find(t => t.id === ticketChoice.id));
+  }
   async function submitTicket() {
     try {
       await createTicket(ticket.id);
@@ -53,10 +69,20 @@ export default function Payment() {
     <>
       <StyledTypography variant="h4">{pageTitle}</StyledTypography>
       <StyledTypography variant="h6" color='textSecondary'>Primeiro, escolha sua modalidade de ingresso</StyledTypography>
-      {ticketsWithoutHotel.map(e => <StyledButton selected={modal === e.name} variant="outlined" onClick={(event) => selectModal(event, e)} key={e.id}>{e.name.split(' ')[0]} <br/>
+      {ticketsWithoutHotel.map(e => <StyledButton selected={modal === e.isRemote} variant="outlined" onClick={() => selectModal(e)} key={e.id}>{e.name.split(' ')[0]} <br/>
         {toBRL(e.price)}</StyledButton>)}
+      {modal === false && 
+      <>
+        <StyledTypography variant="h6" color='textSecondary'> 
+        Ótimo! Agora escolha sua modalidade de hospedagem
+        </StyledTypography>
+        {
+          ticketsNotRemote.map(e => <StyledButton selected={hotel === e.includesHotel} variant="outlined" onClick={() => selectHotel(e)} key={e.id}>{e.name.split(' ')[0]} <br/>
+        + {toBRL(e.plusPrice)}</StyledButton>)
+        }
+      </>
+      }
       {ticket && <>
-
         <StyledTypography variant="h6" color='textSecondary'> 
         Fechado! O total ficou em {toBRL(ticket.price)}. Agora é só confirmar:
         </StyledTypography>
