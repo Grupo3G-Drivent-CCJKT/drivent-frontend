@@ -3,11 +3,14 @@ import styled from 'styled-components';
 import Hotels from '../../../components/Hotels';
 import { mockHotels } from './mockHotelTest';
 import { useState } from 'react';
+import useAsync from '../../../hooks/useAsync';
+import * as hotelsApi from '../../../services/hotelsApi';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState(mockHotels);
   const [hotelSelected, setHotelSelected] = useState(undefined);
-  
+  const { data, loading } = useAsync(hotelsApi.getHotels);
+
   const handleSelectedHotel = (hotel) => {
     if (hotelSelected) {
       if (hotelSelected.id === hotel.id) {
