@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
+import PaymentConclude from './PaymentConclude';
 
 export default function PayTicket({ ticket }) {
   console.log(ticket);
@@ -22,7 +23,7 @@ export default function PayTicket({ ticket }) {
         {toBRL(ticket.TicketType.price)}
       </StyledButton>
       <StyledTypography variant="h6" color='textSecondary'>Pagamento</StyledTypography>
-
+      {ticket.status === 'PAID' && <PaymentConclude/>}
     </>
   );
 }

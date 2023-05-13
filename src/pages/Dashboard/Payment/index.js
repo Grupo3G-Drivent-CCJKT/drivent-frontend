@@ -3,7 +3,6 @@ import useEnrollment from '../../../hooks/api/useEnrollment';
 import BookTicket from '../../../components/BookTicket';
 import useTicket from '../../../hooks/api/useTicket';
 import PayTicket from '../../../components/PayTicket';
-import PaidTicket from '../../../components/PaidTicket';
 import { useState } from 'react';
 
 export default function Payment() {
@@ -18,8 +17,6 @@ export default function Payment() {
     return <WarningPage warning={warning} pageTitle={pageTitle} />;
   }
   if (ticket || readyToPay) return <PayTicket ticket={ticket}/>;
-
-  if(ticket.status === 'PAID') return <PaidTicket ticket={ticket}/>;
 
   return (
     <BookTicket setReadyToPay={setReadyToPay}/>
