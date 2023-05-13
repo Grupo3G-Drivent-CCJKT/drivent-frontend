@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import PaymentConclude from './PaymentConclude';
+import CreditCard from './CreditCard';
 
 export default function PayTicket({ ticket }) {
   console.log(ticket);
@@ -24,6 +25,7 @@ export default function PayTicket({ ticket }) {
       </StyledButton>
       <StyledTypography variant="h6" color='textSecondary'>Pagamento</StyledTypography>
       {ticket.status === 'PAID' && <PaymentConclude/>}
+      {ticket.status === 'RESERVED' && <CreditCard/>}
     </>
   );
 }
