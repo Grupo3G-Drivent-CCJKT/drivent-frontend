@@ -1,27 +1,31 @@
 import React from 'react';
 import Cards from 'react-credit-cards';
 import { OutlinedInput } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import 'react-credit-cards/es/styles-compiled.css';
 import { useState } from 'react';
 import styled from 'styled-components';
 
 export default function CreditCard() {
-  const [ creditCard, setCreditCard ] = useState({ number: '', cvc: '', expiry: '', name: '' });
+  const [creditCard, setCreditCard] = useState({ number: '', cvc: '', expiry: '', name: '' });
 
   return (
-    <CreditCardContainer>
-      <Cards
-        number={creditCard.number}
-        cvc={creditCard.cvc}
-        expiry={creditCard.expiry}
-        name={creditCard.name}/>
-      <Form>
-        <BigInput placeholder='Número do cartão'></BigInput>
-        <BigInput placeholder='Nome'></BigInput>
-        <MiddleInput placeholder='Validade'></MiddleInput>
-        <ShortInput placeholder='CVC'></ShortInput>
-      </Form>
-    </CreditCardContainer>
+    <>
+      <CreditCardContainer>
+        <Cards
+          number={creditCard.number}
+          cvc={creditCard.cvc}
+          expiry={creditCard.expiry}
+          name={creditCard.name} />
+        <Form>
+          <BigInput placeholder='Número do cartão'></BigInput>
+          <BigInput placeholder='Nome'></BigInput>
+          <MiddleInput placeholder='Validade'></MiddleInput>
+          <ShortInput placeholder='CVC'></ShortInput>
+        </Form>
+      </CreditCardContainer>
+      <Button variant='contained'>FINALIZAR PAGAMENTO</Button>
+    </>
   );
 };
 
