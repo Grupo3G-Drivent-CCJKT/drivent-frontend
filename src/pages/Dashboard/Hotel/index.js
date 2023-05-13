@@ -5,6 +5,7 @@ import { mockHotels } from './mockHotelTest';
 import { useState } from 'react';
 import useAsync from '../../../hooks/useAsync';
 import * as hotelsApi from '../../../services/hotelsApi';
+import RoomsContainer from '../../../components/Rooms';
 
 export default function Hotel() {
   const [hotels, setHotels] = useState(mockHotels);
@@ -27,6 +28,7 @@ export default function Hotel() {
       <Title variant='h4'>Escolha de hotel e quarto</Title>
       <SubTitle variant='h6'>Primeiro, escolha seu hotel</SubTitle>
       <Hotels data={hotels} hotelSelected={hotelSelected} handleChange={handleSelectedHotel} />
+      {hotelSelected && <RoomsContainer hotelId={hotelSelected.id}/>}
     </>
   );
 }
