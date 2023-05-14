@@ -1,18 +1,16 @@
 import { useMemo, useState } from 'react';
 import Room from './Room';
 import styled from 'styled-components';
-import useToken from '../../hooks/useToken';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import useCreateBooking from '../../hooks/api/useCreateBooking';
 import { toast } from 'react-toastify';
 
 export default function RoomsContainer({ data }) {
-  const token = useToken();
   const [rooms, setRooms] = useState(undefined);
   const [selectedButton, setSelectedButton] = useState(null);
   const [roomId, setRoomId] = useState(undefined);
-  const { createBookingLoading, createBooking, createBookingError } = useCreateBooking();
+  const { createBookingLoading, createBooking } = useCreateBooking();
 
   useMemo(() => {
     setRooms(data);
