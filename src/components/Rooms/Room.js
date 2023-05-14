@@ -1,40 +1,24 @@
 import styled from 'styled-components';
 import Person from './PersonIcon';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Button from '@material-ui/core/Button';
 
 export default function Room({ data, selected, onRoomSelect }) {
-  const {
-    id,
-    name,
-    capacity,
-    hotelId,
-    _count: { Booking: occupiedQuantity },
-  } = data;
+  const { id, name, available, bookings } = data;
   const [disabled, setDisabled] = useState(false);
   const [numberVacacies, setNumberVacacies] = useState([]);
 
-  function numberVacancies(capacity, occupiedQuantity) {
-    if (capacity === occupiedQuantity) setDisabled(true);
-    const avaliableQauntity = capacity - occupiedQuantity;
-    const arr = new Array(avaliableQauntity + occupiedQuantity);
-    arr.fill(true, 0, avaliableQauntity);
-    arr.fill(false, avaliableQauntity);
+  function numberVacancies(available, bookings) {
+    if (available === 0) setDisabled(true);
+    const arr = new Array(available + bookings);
+    arr.fill(true, 0, available);
+    arr.fill(false, available);
     setNumberVacacies(arr);
   }
 
   useMemo(() => {
-    numberVacancies(capacity, occupiedQuantity);
-  }, [capacity, occupiedQuantity]);
-
-  // useEffect(() => {
-  //   if (capacity === occupiedQuantity) setDisabled(true);
-  //   const avaliableQauntity = capacity - occupiedQuantity;
-  //   const arr = new Array(avaliableQauntity + occupiedQuantity);
-  //   arr.fill(true, 0, avaliableQauntity);
-  //   arr.fill(false, avaliableQauntity);
-  //   setNumberVacacies(arr);
-  // }, []);
+    numberVacancies(available, bookings);
+  }, [available, bookings]);
 
   function handleRoomSelect(e) {
     e.preventDefault();

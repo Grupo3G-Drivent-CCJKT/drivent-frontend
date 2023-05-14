@@ -1,28 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Room from './Room';
 import styled from 'styled-components';
-import * as roomApi from '../../services/roomApi';
-import useToken from '../../hooks/useToken';
 import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import useCreateBooking from '../../hooks/api/useCreateBooking';
 import { toast } from 'react-toastify';
 
-export default function RoomsContainer({ hotelId }) {
-  const token = useToken();
+export default function RoomsContainer({ data }) {
   const [rooms, setRooms] = useState(undefined);
   const [selectedButton, setSelectedButton] = useState(null);
   const [roomId, setRoomId] = useState(undefined);
-  const { createBookingLoading, createBooking, createBookingError } = useCreateBooking();
+  const { createBookingLoading, createBooking } = useCreateBooking();
 
-  useEffect(async() => {
-    try {
-      const data = await roomApi.getRoomsInformations(hotelId, token);
-      setRooms(data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  }, [hotelId]);
+  useMemo(() => {
+    setRooms(data);
+  }, [data]);
 
   function handleButtonClick(id) {
     if (selectedButton !== id) {
