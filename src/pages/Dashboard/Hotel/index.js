@@ -1,14 +1,16 @@
 import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 import Hotels from '../../../components/Hotels';
-import { mockHotels } from './mockHotelTest';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as hotelsApi from '../../../services/hotelsApi';
 import RoomsContainer from '../../../components/Rooms';
+import useToken from '../../../hooks/useToken';
 
 export default function Hotel() {
-  const [hotels, setHotels] = useState(mockHotels);
+  const token = useToken();
+  const [hotels, setHotels] = useState(undefined);
   const [hotelSelected, setHotelSelected] = useState(undefined);
-  
+
   const handleSelectedHotel = (hotel) => {
     if (hotelSelected) {
       if (hotelSelected.id === hotel.id) {
@@ -19,6 +21,16 @@ export default function Hotel() {
     }
     setHotelSelected(hotel);
   };
+
+  useEffect(async() => {
+    try {
+      const data = await hotelsApi.getHotels(token);
+      console.log(data);
+      setHotels(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, []);
 
   return (
     <>
