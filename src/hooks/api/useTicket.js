@@ -8,11 +8,13 @@ export default function useTicket() {
 
   const {
     data: ticket,
+    loading: ticketLoading,
     error: notFound
   } = useAsync(() => ticketApi.getTicket(token));
 
   return {
     ticket,
+    ticketLoading,
     notFound
   };
 }

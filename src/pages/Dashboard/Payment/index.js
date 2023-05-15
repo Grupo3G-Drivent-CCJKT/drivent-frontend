@@ -16,7 +16,7 @@ export default function Payment() {
 
     return <WarningPage warning={warning} pageTitle={pageTitle} />;
   }
-  if (ticket || readyToPay) return <PayTicket ticket={ticket}/>;
+  if (ticket || readyToPay) return <PayTicket/>;
 
   return (
     <BookTicket setReadyToPay={setReadyToPay}/>
