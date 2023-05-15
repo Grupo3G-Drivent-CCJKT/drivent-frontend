@@ -68,7 +68,7 @@ export default function BookTicket({ setReadyToPay }) {
       toast('Ingresso reservado com sucesso!');
       setReadyToPay(true);
     } catch (error) {
-      toast(`Falha na reserva do ingresso. ${error.response.data.message}`);
+      toast(`Falha na reserva do ingresso. ${error.response ? error.response.data.message : ''}`);
     }
   }
 
