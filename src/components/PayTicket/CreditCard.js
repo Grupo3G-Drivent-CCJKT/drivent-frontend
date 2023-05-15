@@ -5,9 +5,13 @@ import Button from '@material-ui/core/Button';
 import 'react-credit-cards-2/dist/es/styles-compiled.css';
 import { useState } from 'react';
 import styled from 'styled-components';
+import useSavePayment from '../../hooks/api/useSavePayment';
+import { toast } from 'react-toastify';
+import creditCardType from 'credit-card-type';
 
-export default function CreditCard() {
+export default function CreditCard({ setPayment }) {
   const [creditCard, setCreditCard] = useState({ number: '', expiry: '', cvc: '', name: '', focus: '' });
+  const { submitPayment, paymentLoading } = useSavePayment();
   const handleInputChange = (evt) => {
     const { name, value } = evt.target;
     setCreditCard((prev) => ({ ...prev, [name]: value }));
@@ -15,6 +19,24 @@ export default function CreditCard() {
   const handleInputFocus = (evt) => {
     setCreditCard((prev) => ({ ...prev, focus: evt.target.name }));
   };
+
+  async function submit() {
+    const [{ niceType: issuer }] = creditCardType(creditCard.number);
+    try {
+      const formatedCard = {
+        issuer,
+        number: creditCard.number,
+        name: creditCard.name,
+        expirationDate: new Date('20'+creditCard.expiry.slice(2, 4), creditCard.expiry.slice(0, 2)),
+        cvv: creditCard.cvc
+      }; 
+      await submitPayment(formatedCard);
+      setPayment(true);
+      toast('Pagamento realizado com sucesso!');
+    } catch (error) {
+      toast(`Pagamento não pode ser confirmado ${error.response ? error.response.data.message : ''}`);
+    }
+  }
 
   return (
     <>
@@ -61,7 +83,7 @@ export default function CreditCard() {
           />
         </Form>
       </CreditCardContainer>
-      <Button variant='contained'>FINALIZAR PAGAMENTO</Button>
+      <Button variant='contained' disabled={paymentLoading} onClick={submit}>FINALIZAR PAGAMENTO</Button>
     </>
   );
 };
