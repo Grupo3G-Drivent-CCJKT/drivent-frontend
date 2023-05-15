@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import { Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import PaymentConclude from './PaymentConclude';
@@ -7,18 +8,18 @@ import useTicket from '../../hooks/api/useTicket';
 
 export default function PayTicket() {
   const { ticket, ticketLoading } = useTicket();
+  const [payment, setPayment] = useState(false);
   const pageTitle = 'Ingresso e pagamento';
 
   function toBRL(value) {
     return (value / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
-
   return (
     <>
       <StyledTypography variant="h4">{pageTitle}</StyledTypography>
       <StyledTypography variant="h6" color='textSecondary'>Ingresso escolhido</StyledTypography>
       {
-        !ticketLoading && ticket?.TicketType && <>
+        !ticketLoading  && <>
           <StyledButton>
             {ticket.TicketType.isRemote && 'Online'}
             {(!ticket.TicketType.isRemote && !ticket.TicketType.includesHotel) && 'Presencial + Sem Hotel'}
@@ -27,8 +28,7 @@ export default function PayTicket() {
             {toBRL(ticket.TicketType.price)}
           </StyledButton>
           <StyledTypography variant="h6" color='textSecondary'>Pagamento</StyledTypography>
-          {ticket.status === 'PAID' && <PaymentConclude/>}
-          {ticket.status === 'RESERVED' && <CreditCard/>}
+          {ticket.status === 'PAID' || payment ? <PaymentConclude/> : <CreditCard setPayment={setPayment}/>}
         
         </>
       }
