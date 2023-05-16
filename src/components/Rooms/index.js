@@ -7,15 +7,18 @@ import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import useCreateBooking from '../../hooks/api/useCreateBooking';
 import { toast } from 'react-toastify';
+import useChengeBooking from '../../hooks/api/useChangeBooking';
 
 export default function RoomsContainer({ hotelId }) {
   const token = useToken();
   const [rooms, setRooms] = useState(undefined);
   const [selectedButton, setSelectedButton] = useState(null);
   const [roomId, setRoomId] = useState(undefined);
-  const { createBookingLoading, createBooking, createBookingError } = useCreateBooking();
+  const { createBookingLoading, createBooking } = useCreateBooking();
+  const { changeBookingLoading, changeBooking } = useChengeBooking();
+  const [bookingId, setBookingId] = useState(undefined);
 
-  useEffect(async() => {
+  useEffect(async () => {
     try {
       const data = await roomApi.getRoomsInformations(hotelId, token);
       setRooms(data);
@@ -36,8 +39,15 @@ export default function RoomsContainer({ hotelId }) {
 
   async function submitBooking() {
     try {
-      await createBooking(roomId);
-      toast('Hotel reservado com sucesso!');
+      if (bookingId === undefined) {
+        const result = await createBooking(roomId);
+        toast('Hotel reservado com sucesso!');
+        setBookingId(result);
+      } else {
+        const result = await changeBooking(roomId, bookingId);
+        toast('Hotel alterado com sucesso!');
+        setBookingId(result);
+      }
     } catch (error) {
       toast(`Falha na reserva do hotel. ${error.response.data.message}`);
     }
@@ -58,7 +68,7 @@ export default function RoomsContainer({ hotelId }) {
           ))}
       </ContainerWrapper>
       {selectedButton !== null && (
-        <Button variant="contained" onClick={submitBooking} disabled={createBookingLoading}>
+        <Button variant="contained" onClick={submitBooking} disabled={createBookingLoading || changeBookingLoading}>
           RESERVAR QUARTO
         </Button>
       )}
