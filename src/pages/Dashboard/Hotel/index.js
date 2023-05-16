@@ -5,11 +5,31 @@ import { useEffect, useState } from 'react';
 import * as hotelsApi from '../../../services/hotelsApi';
 import RoomsContainer from '../../../components/Rooms';
 import useToken from '../../../hooks/useToken';
+import useTicket from '../../../hooks/api/useTicket';
+import WarningPage from '../../../components/WarningPage';
 
 export default function Hotel() {
-  const token = useToken();
   const [hotels, setHotels] = useState(undefined);
   const [hotelSelected, setHotelSelected] = useState(undefined);
+  const token = useToken();
+  const { ticket } = useTicket();
+
+  useEffect(async() => {
+    try {
+      const data = await hotelsApi.getHotels(token);
+      console.log(data);
+      setHotels(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, []);
+
+  if(ticket === null || ticket.status !=='PAID') {
+    const pageTitle = 'Escolha de hotel e quarto';
+    const warning = 'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem';
+
+    return <WarningPage warning={warning} pageTitle={pageTitle} />;
+  }
 
   const handleSelectedHotel = (hotel) => {
     if (hotelSelected) {
@@ -22,22 +42,12 @@ export default function Hotel() {
     setHotelSelected(hotel);
   };
 
-  useEffect(async() => {
-    try {
-      const data = await hotelsApi.getHotels(token);
-      console.log(data);
-      setHotels(data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  }, []);
-
   return (
     <>
       <Title variant='h4'>Escolha de hotel e quarto</Title>
       <SubTitle variant='h6'>Primeiro, escolha seu hotel</SubTitle>
       <Hotels data={hotels} hotelSelected={hotelSelected} handleChange={handleSelectedHotel} />
-      {hotelSelected && <RoomsContainer data={hotelSelected.rooms}/>}
+      {hotelSelected && <RoomsContainer data={hotelSelected.rooms} />}
     </>
   );
 }
