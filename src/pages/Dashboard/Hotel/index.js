@@ -6,12 +6,15 @@ import * as hotelsApi from '../../../services/hotelsApi';
 import RoomsContainer from '../../../components/Rooms';
 import useToken from '../../../hooks/useToken';
 import { BodyHotel, ContainerHotel, ImageHotel, SubTitleHotel, TitleHotel } from '../../../components/Hotels/Hotel';
+import useTicket from '../../../hooks/api/useTicket';
+import WarningPage from '../../../components/WarningPage';
 
 export default function Hotel() {
-  const token = useToken();
   const [hotels, setHotels] = useState(undefined);
   const [hotelSelected, setHotelSelected] = useState(undefined);
   const [booking, setBooking] = useState(undefined);
+  const token = useToken();
+  const { ticket } = useTicket();
 
   const handleSelectedHotel = (hotel) => {
     if (hotelSelected) {
@@ -35,6 +38,13 @@ export default function Hotel() {
       console.log(error.message);
     }
   }, []);
+  
+  if(ticket === null || ticket.status !=='PAID') {
+    const pageTitle = 'Escolha de hotel e quarto';
+    const warning = 'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem';
+
+    return <WarningPage warning={warning} pageTitle={pageTitle} />;
+  }
 
   if (booking && booking.id) {
     return (
