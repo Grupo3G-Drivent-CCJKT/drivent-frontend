@@ -10,7 +10,7 @@ export default function useChengeBooking() {
     loading: changeBookingLoading,
     error: changeBookingError,
     act: changeBooking,
-  } = useAsync((roomId, bookingId) => bookingApi.changeBooking(roomId,bookingId, token), false);
+  } = useAsync((roomId, bookingId) => bookingApi.changeBooking(roomId, bookingId, token), false);
 
   return {
     changeBookingLoading,

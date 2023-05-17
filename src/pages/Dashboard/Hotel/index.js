@@ -10,6 +10,7 @@ export default function Hotel() {
   const token = useToken();
   const [hotels, setHotels] = useState(undefined);
   const [hotelSelected, setHotelSelected] = useState(undefined);
+  const [bookingId, setBookingId] = useState(undefined);
 
   const handleSelectedHotel = (hotel) => {
     if (hotelSelected) {
@@ -37,7 +38,7 @@ export default function Hotel() {
       <Title variant='h4'>Escolha de hotel e quarto</Title>
       <SubTitle variant='h6'>Primeiro, escolha seu hotel</SubTitle>
       <Hotels data={hotels} hotelSelected={hotelSelected} handleChange={handleSelectedHotel} />
-      {hotelSelected && <RoomsContainer data={hotelSelected.rooms}/>}
+      {hotelSelected && <RoomsContainer data={hotelSelected.rooms} bookingId={bookingId} setBookingId={setBookingId}/>}
     </>
   );
 }

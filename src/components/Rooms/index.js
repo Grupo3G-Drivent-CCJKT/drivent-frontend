@@ -7,15 +7,14 @@ import useCreateBooking from '../../hooks/api/useCreateBooking';
 import { toast } from 'react-toastify';
 import useChengeBooking from '../../hooks/api/useChangeBooking';
 
-export default function RoomsContainer({ data }) {
+export default function RoomsContainer({ data, bookingId, setBookingId }) {
   const [rooms, setRooms] = useState(undefined);
   const [selectedButton, setSelectedButton] = useState(null);
   const [roomId, setRoomId] = useState(undefined);
   const { createBookingLoading, createBooking } = useCreateBooking();
   const { changeBookingLoading, changeBooking } = useChengeBooking();
-  const [bookingId, setBookingId] = useState(undefined);
 
-  useMemo( () => {
+  useMemo(() => {
     setRooms(data);
   }, [data]);
 
