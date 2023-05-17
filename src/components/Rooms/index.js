@@ -7,7 +7,7 @@ import useCreateBooking from '../../hooks/api/useCreateBooking';
 import { toast } from 'react-toastify';
 import useChengeBooking from '../../hooks/api/useChangeBooking';
 
-export default function RoomsContainer({ data, bookingId, setBookingId }) {
+export default function RoomsContainer({ data, setBooking }) {
   const [rooms, setRooms] = useState(undefined);
   const [selectedButton, setSelectedButton] = useState(null);
   const [roomId, setRoomId] = useState(undefined);
@@ -39,6 +39,9 @@ export default function RoomsContainer({ data, bookingId, setBookingId }) {
         toast('Hotel alterado com sucesso!');
         setBookingId(result);
       }
+      await createBooking(roomId);
+      setBooking({ id: 1 });
+      toast('Hotel reservado com sucesso!');
     } catch (error) {
       toast(`Falha na reserva do hotel. ${error.response.data.message}`);
     }

@@ -27,18 +27,18 @@ export default function HotelCard({ data, backgroundColor, handleChange }) {
   }
 
   return (
-    <Container backgroundColor={backgroundColor} onClick={e => handleChange(data)}>
+    <ContainerHotel backgroundColor={backgroundColor} onClick={e => handleChange(data)}>
       <ImageHotel src={data.image} alt="/" />
-      <Title variant='h6'>{data.name}</Title>
-      <SubTitle variant='subtitle2'>Tipos de acomodação:</SubTitle>
-      <Body variant='body2'>{getRoomTypes(data.rooms)}</Body>
-      <SubTitle variant='subtitle2'>Vagas disponíveis:</SubTitle>
-      <Body variant='body2'>{data.totalavailablerooms}</Body>
-    </Container>
+      <TitleHotel variant='h6'>{data.name}</TitleHotel>
+      <SubTitleHotel variant='subtitle2'>Tipos de acomodação:</SubTitleHotel>
+      <BodyHotel variant='body2'>{getRoomTypes(data.rooms)}</BodyHotel>
+      <SubTitleHotel variant='subtitle2'>Vagas disponíveis:</SubTitleHotel>
+      <BodyHotel variant='body2'>{data.totalavailablerooms}</BodyHotel>
+    </ContainerHotel>
   );
 }
 
-const Container = styled.div`
+export const ContainerHotel = styled.div`
   width: 200px;
   height: 260px;
   border-radius: 10px;
@@ -50,21 +50,21 @@ const Container = styled.div`
   cursor: pointer;
 `;
 
-const ImageHotel = styled.img`
+export const ImageHotel = styled.img`
   width: 170px;
   height: 110px;
   border-radius: 5px;
   margin-top: 1rem;
 `;
 
-const Title = styled(Typography)`
+export const TitleHotel = styled(Typography)`
   margin-top: 0.5rem!important;
   color: #343434;
   width: 84%;
   text-align: left;
 `;
 
-const SubTitle = styled.p`
+export const SubTitleHotel = styled.p`
   font-family: 'Roboto';
   font-weight: 700;
   font-size: 12px;
@@ -77,7 +77,7 @@ const SubTitle = styled.p`
   line-height: 1.5;
 `;
 
-const Body = styled.p`
+export const BodyHotel = styled.p`
   font-family: 'Roboto';
   font-weight: 400;
   font-size: 12px;
