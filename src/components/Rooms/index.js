@@ -5,12 +5,14 @@ import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import useCreateBooking from '../../hooks/api/useCreateBooking';
 import { toast } from 'react-toastify';
+import useChengeBooking from '../../hooks/api/useChangeBooking';
 
-export default function RoomsContainer({ data, setBooking }) {
+export default function RoomsContainer({ data, setBooking, booking, setShowSummary }) {
   const [rooms, setRooms] = useState(undefined);
   const [selectedButton, setSelectedButton] = useState(null);
   const [roomId, setRoomId] = useState(undefined);
   const { createBookingLoading, createBooking } = useCreateBooking();
+  const { changeBookingLoading, changeBooking } = useChengeBooking();
 
   useMemo(() => {
     setRooms(data);
@@ -28,9 +30,16 @@ export default function RoomsContainer({ data, setBooking }) {
 
   async function submitBooking() {
     try {
-      await createBooking(roomId);
-      setBooking({ id: 1 });
-      toast('Hotel reservado com sucesso!');
+      if (booking === undefined) {
+        const result = await createBooking(roomId);
+        toast('Hotel reservado com sucesso!');
+        setBooking(result[0]);
+      } else {
+        const result = await changeBooking(roomId, booking.id);
+        toast('Hotel alterado com sucesso!');
+        setBooking(result[0]);
+      }
+      setShowSummary(true);
     } catch (error) {
       toast(`Falha na reserva do hotel. ${error.response.data.message}`);
     }
@@ -51,7 +60,7 @@ export default function RoomsContainer({ data, setBooking }) {
           ))}
       </ContainerWrapper>
       {selectedButton !== null && (
-        <Button variant="contained" onClick={submitBooking} disabled={createBookingLoading}>
+        <Button variant="contained" onClick={submitBooking} disabled={createBookingLoading || changeBookingLoading}>
           RESERVAR QUARTO
         </Button>
       )}
