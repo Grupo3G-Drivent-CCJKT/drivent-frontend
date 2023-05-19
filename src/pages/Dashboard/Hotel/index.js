@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Hotels from '../../../components/Hotels';
 import { useEffect, useState } from 'react';
 import * as hotelsApi from '../../../services/hotelsApi';
+import * as ticketApi from '../../../services/ticketApi';
 import RoomsContainer from '../../../components/Rooms';
 import useToken from '../../../hooks/useToken';
 import { BodyHotel, ContainerHotel, ImageHotel, SubTitleHotel, TitleHotel } from '../../../components/Hotels/Hotel';
@@ -42,6 +43,13 @@ export default function Hotel() {
   if(ticket === null || ticket.status !=='PAID') {
     const pageTitle = 'Escolha de hotel e quarto';
     const warning = 'Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem';
+
+    return <WarningPage warning={warning} pageTitle={pageTitle} />;
+  }
+
+  if(!ticket.TicketType.includesHotel) {
+    const pageTitle = 'Escolha de hotel e quarto';
+    const warning = 'O ingresso que você escolheu não inclui hospedagem, escolha as suas atividades';
 
     return <WarningPage warning={warning} pageTitle={pageTitle} />;
   }
