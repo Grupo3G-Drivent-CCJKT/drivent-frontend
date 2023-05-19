@@ -57,13 +57,6 @@ export default function Hotel() {
     return <WarningPage warning={warning} pageTitle={pageTitle} />;
   }
 
-  if(!ticket.TicketType.includesHotel) {
-    const pageTitle = 'Escolha de hotel e quarto';
-    const warning = 'O ingresso que você escolheu não inclui hospedagem, escolha as suas atividades';
-
-    return <WarningPage warning={warning} pageTitle={pageTitle} />;
-  }
-
   if (showSummary === true) {
     return (
       <>
