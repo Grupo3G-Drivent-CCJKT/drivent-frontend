@@ -15,6 +15,7 @@ export default function Hotel() {
   const [hotelSelected, setHotelSelected] = useState(undefined);
   const [booking, setBooking] = useState(undefined);
   const [showSummary, setShowSummary] = useState(false);
+  const [updateBooking, setUpdateBooking] = useState(false);
   const token = useToken();
   const { ticket } = useTicket();
 
@@ -35,12 +36,15 @@ export default function Hotel() {
       if (data.booking && data.booking.length === 1) {
         setBooking(data.booking[0]);
         setShowSummary(true);
+        const bookedHotelName = data.booking[0].hotel.name;
+        const hotel = data.hotels.find(el => el.name === bookedHotelName );
+        setHotelSelected(hotel);
       }
       setHotels(data.hotels);
     } catch (error) {
       console.log(error.message);
     }
-  }, []);
+  }, [updateBooking]);
 
   if (ticket === null || ticket.status !== 'PAID') {
     const pageTitle = 'Escolha de hotel e quarto';
@@ -82,6 +86,7 @@ export default function Hotel() {
           setBooking={setBooking}
           booking={booking}
           setShowSummary={setShowSummary}
+          setUpdateBooking={setUpdateBooking}
         />
       )}
     </>
