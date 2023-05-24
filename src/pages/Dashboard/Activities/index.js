@@ -4,10 +4,25 @@ import styled from 'styled-components';
 import { Typography } from '@material-ui/core';
 import { maskDate } from '../../../utils/masks';
 import Locations from './Locations';
+import useTicket from '../../../hooks/api/useTicket';
+import WarningPage from '../../../components/WarningPage';
 
 export default function Activities() {
   const [dates, setDates] = useState(datesMock);
   const [dateSelected, setDateSelected] = useState(undefined);
+  const { ticket } = useTicket();
+
+  const pageTitle = 'Escolha de atividades';
+
+  if (ticket) {
+    if (ticket.TicketType.isRemote && ticket.status === 'PAID') return <WarningPage
+      warning='Sua modalidade de ingresso não necessita escolher atividade. Você terá acesso a todas as atividades.'
+      pageTitle={pageTitle}/>;
+
+    if (ticket.status === 'RESERVED') return <WarningPage
+      pageTitle={pageTitle}
+      warning='Você precisa ter confirmado pagamento antes de fazer a escolha de atividades'/>;
+  }
 
   function handleSelected(date) {
     if (dateSelected) {

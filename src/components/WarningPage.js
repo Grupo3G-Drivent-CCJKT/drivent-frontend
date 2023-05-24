@@ -21,8 +21,11 @@ const Container = styled.div`
     flex-direction: column;
     align-items:center;
     justify-content:center;
+    text-align: center;
     font-size: 20px;
     height: 550px ;
+    width: 411px;
     color: #8E8E8E;
+    margin-left: 200px;
     font-family: 'Roboto', sans-serif;
 `;
