@@ -15,21 +15,28 @@ export default function Locations({ dateSelected }) {
 
 const Container = styled.div`
     display: ${props => props.selected ? 'flex' : 'none'};
+    justify-content: baseline;
     height: 420px;
+    width:870px;
     margin-top: 60px;
+    /* background-color:; */
     overflow-x: auto;
     &::-webkit-scrollbar {
-        width: 20px;
+        height: 8px;
     }
     &::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey; 
+        box-shadow: inset 0 0 5px white; 
         border-radius: 10px;
     }
     &::-webkit-scrollbar-thumb {
-        background: #142C48; 
+        background: hsla(218, 78%, 95%, 1); 
         border-radius: 10px;
     }
     &::-webkit-scrollbar-thumb:hover {
-        background: #3d4388; 
+        background: hsl(220, 70%, 47%);
+      }
+    &::-webkit-scrollbar-track:hover {
+        box-shadow: inset 0 0 5px grey; 
+        border-radius: 10px;
     }
 `;
