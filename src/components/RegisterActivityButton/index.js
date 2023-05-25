@@ -2,11 +2,11 @@ import { IoLogInOutline } from 'react-icons/io5';
 import styled from 'styled-components';
 
 export default function RegisterActivityButton({ activity }) {
-  const { avaliable, id } = activity;
+  const { available, id } = activity;
   return (
     <>
       <IoLogInOutline color='#078632' size={23} />
-      <Vacancies>{`${avaliable} vagas id${id}`}</Vacancies>
+      <Vacancies>{`${available} vagas id${id}`}</Vacancies>
     </>
   );}
 
