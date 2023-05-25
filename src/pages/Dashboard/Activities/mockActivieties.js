@@ -21,6 +21,14 @@ export const locationsActivitiesData = [
         avaliable: 5,
         capacity: 10,
       },
+      {
+        id: 23,
+        name: 'Activity 23',
+        startsAt: '2023-05-24T14:00:00Z',
+        endsAt: '2023-05-24T18:00:00Z',
+        avaliable: 5,
+        capacity: 10,
+      },
     ],
   },
   {

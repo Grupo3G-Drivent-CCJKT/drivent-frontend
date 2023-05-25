@@ -34,6 +34,7 @@ const Card = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0;
 `;
 
 const ContainerNameTime = styled.div`
@@ -49,7 +50,7 @@ const Name = styled.p`
     font-size: 12px;
     line-height: 14px;
     text-align: left;
-    color: #343434
+    color: #343434;
 `;
 
 const Time = styled.p`

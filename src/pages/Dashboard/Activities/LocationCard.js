@@ -30,9 +30,24 @@ const Title = styled.p`
 const CardPrincipal = styled.div`
     width: 100%;
     height: 390px;
+    overflow-y:auto;
     border: 1px solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 10px;
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey; 
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #142C48; 
+        border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #3d4388; 
+    }
 `;

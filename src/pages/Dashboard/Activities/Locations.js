@@ -15,11 +15,13 @@ export default function Locations({ dateSelected }) {
 
 const Container = styled.div`
     display: ${props => props.selected ? 'flex' : 'none'};
+    justify-content: baseline;
     height: 420px;
     margin-top: 60px;
-    overflow-x: auto;
-    &::-webkit-scrollbar {
-        width: 20px;
+    /* overflow-x: auto; */
+    /* overflow-y:auto; */
+    /* &::-webkit-scrollbar {
+        width: 8px;
     }
     &::-webkit-scrollbar-track {
         box-shadow: inset 0 0 5px grey; 
@@ -31,5 +33,5 @@ const Container = styled.div`
     }
     &::-webkit-scrollbar-thumb:hover {
         background: #3d4388; 
-    }
+    } */
 `;
