@@ -4,9 +4,9 @@ import Activity from './Activity';
 export default function LocationCard({ data }) {
   return (
     <CardLocation>
-      <Title variant='h6'>{data.name}</Title>
+      <Title variant='h6'>{data?.name}</Title>
       <CardPrincipal>
-        {data.Activities.map(acti => <Activity key={acti.id} data={acti} />)}
+        {data && data.activities.map(acti => <Activity key={acti.id} data={acti} />)}
       </CardPrincipal>
     </CardLocation>
   );

@@ -1,10 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { locationsActivitiesData } from './mockActivieties';
 import styled from 'styled-components';
 import LocationCard from './LocationCard';
+import activitiesApi from '../../../services/activitiesApi';
+import useToken from '../../../hooks/useToken';
 
 export default function Locations({ dateSelected }) {
-  const [locations, setLocations] = useState(locationsActivitiesData);
+  const [locations, setLocations] = useState(undefined);
+  const token = useToken();
+
+  useEffect(async() => {
+    if (dateSelected) {
+      try {
+        const data = await activitiesApi.findActivitiesByDate(dateSelected, token);
+        setLocations(data);
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
+  }, [dateSelected]);
 
   return (
     <Container selected={dateSelected}>

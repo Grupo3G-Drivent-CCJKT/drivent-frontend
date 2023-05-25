@@ -6,11 +6,11 @@ import { maskDate } from '../../../utils/masks';
 import Locations from './Locations';
 import useTicket from '../../../hooks/api/useTicket';
 import WarningPage from '../../../components/WarningPage';
-import * as activitiesApi from '../../../services/activitiesApi';
+import activitiesApi from '../../../services/activitiesApi';
 import useToken from '../../../hooks/useToken';
 
 export default function Activities() {
-  const [dates, setDates] = useState(datesMock);
+  const [dates, setDates] = useState(undefined);
   const [dateSelected, setDateSelected] = useState(undefined);
   const { ticket } = useTicket();
   const token = useToken();
