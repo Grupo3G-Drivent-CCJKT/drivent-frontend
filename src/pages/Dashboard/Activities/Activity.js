@@ -10,8 +10,8 @@ export default function Activity({ data }) {
         <Name>{data.name}</Name>
         <Time>{formatTimeRange(data.startsAt, data.endsAt)}</Time>
       </ContainerNameTime>
-      <ContainerIcon avaliable={data.avaliable > 0}>
-        {data.avaliable > 0 ? (
+      <ContainerIcon avaliable={data.available > 0}>
+        {data.available > 0 ? (
           <RegisterActivityButton activity={data}></RegisterActivityButton>
         ):(
           <>
