@@ -75,4 +75,26 @@ export const locationsActivitiesData = [
       },
     ],
   },
+  {
+    id: 4,
+    name: 'Location 4',
+    Activities: [
+      {
+        id: 7,
+        name: 'Activity 7',
+        startsAt: '2023-05-24T11:00:00Z',
+        endsAt: '2023-05-24T13:00:00Z',
+        avaliable: 3,
+        capacity: 5,
+      },
+      {
+        id: 8,
+        name: 'Activity 8',
+        startsAt: '2023-05-24T15:00:00Z',
+        endsAt: '2023-05-24T17:00:00Z',
+        avaliable: 0,
+        capacity: 8,
+      },
+    ],
+  },
 ];
