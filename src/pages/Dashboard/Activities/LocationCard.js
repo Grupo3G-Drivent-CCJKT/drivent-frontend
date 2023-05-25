@@ -37,8 +37,9 @@ const CardPrincipal = styled.div`
     align-items: center;
     padding-top: 10px;
     &::-webkit-scrollbar {
-        width: 5px;
+        width: 6px;
     }
+   
     &::-webkit-scrollbar-track {
         box-shadow: inset 0 0 5px grey; 
         border-radius: 10px;
@@ -48,6 +49,11 @@ const CardPrincipal = styled.div`
         border-radius: 10px;
     }
     &::-webkit-scrollbar-thumb:hover {
-        background: #3d4388; 
+        background: #3d4388;
+      }
+    &::-webkit-scrollbar-track:hover {
+        box-shadow: inset 0 0 5px grey; 
+        border-radius: 10px;
+
     }
 `;
