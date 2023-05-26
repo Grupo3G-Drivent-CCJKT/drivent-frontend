@@ -4,7 +4,7 @@ import useCreateRegister from '../../hooks/api/useCreateRegister';
 import { toast } from 'react-toastify';
 
 export default function RegisterActivityButton({ activity }) {
-  const { avaliable, id } = activity;
+  const { available, id } = activity;
   const { createRegister } = useCreateRegister();
 
   async function createNewRegister() {
@@ -18,7 +18,7 @@ export default function RegisterActivityButton({ activity }) {
   return (
     <Container onClick={() => createNewRegister(id)}>
       <IoLogInOutline color='#078632' size={23} />
-      <Vacancies>{`${avaliable} vagas id${id}`}</Vacancies>
+      <Vacancies>{`${available} vagas`}</Vacancies>
     </Container>
   );
 }

@@ -1,7 +1,6 @@
 import useAsync from '../useAsync';
 import useToken from '../useToken';
-
-import * as activitiesApi from '../../services/activitiesApi';
+import activitiesApi from '../../services/activitiesApi';
 
 export default function useCreateRegister() {
   const token = useToken();

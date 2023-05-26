@@ -5,11 +5,20 @@ import useGetSubscriptions from '../../../hooks/api/useGetSubscriptions';
 export default function LocationCard({ data }) {
   const { subscriptions } = useGetSubscriptions();
   
+  const activities = data.activities.sort((a, b) => {
+    if (a.startsAt > b.startsAt) {
+      return 1;
+    }
+    if (a.startsAt < b.startsAt) {
+      return -1;
+    }
+    return 0;
+  });
   return (
     <CardLocation>
-      <Title variant='h6'>{data.name}</Title>
+      <Title variant='h6'>{data?.name}</Title>
       <CardPrincipal>
-        {data.Activities.map(acti => <Activity subscribed={subscriptions?.find((s) => s.id === acti.id)} key={acti.id} data={acti} />)}
+        {activities && activities.map(acti => <Activity subscribed={subscriptions?.find((s) => s.id === acti.id)} key={acti.id} data={acti} />)}
       </CardPrincipal>
     </CardLocation>
   );
