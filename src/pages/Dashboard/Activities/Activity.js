@@ -10,7 +10,7 @@ export default function Activity({ data }) {
         <Name>{data.name}</Name>
         <Time>{formatTimeRange(data.startsAt, data.endsAt)}</Time>
       </ContainerNameTime>
-      <ContainerIcon avaliable={data.available > 0}>
+      <ContainerIcon available={data.available > 0}>
         {data.available > 0 ? (
           <RegisterActivityButton activity={data}></RegisterActivityButton>
         ):(
@@ -70,7 +70,7 @@ const ContainerIcon = styled.div`
     align-items: center;
     flex-direction: column;
     :hover {
-      cursor: ${props => props.avaliable ? 'pointer' : 'not-allowed' };
+      cursor: ${props => props.available ? 'pointer' : 'not-allowed' };
     };
     
 `;

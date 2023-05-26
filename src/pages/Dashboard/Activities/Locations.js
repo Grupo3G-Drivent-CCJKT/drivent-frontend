@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { locationsActivitiesData } from './mockActivieties';
 import styled from 'styled-components';
 import LocationCard from './LocationCard';
 import activitiesApi from '../../../services/activitiesApi';
