@@ -1,12 +1,15 @@
 import styled from 'styled-components';
 import Activity from './Activity';
+import useGetSubscriptions from '../../../hooks/api/useGetSubscriptions';
 
 export default function LocationCard({ data }) {
+  const { subscriptions } = useGetSubscriptions();
+  
   return (
     <CardLocation>
       <Title variant='h6'>{data.name}</Title>
       <CardPrincipal>
-        {data.Activities.map(acti => <Activity key={acti.id} data={acti} />)}
+        {data.Activities.map(acti => <Activity subscribed={subscriptions?.find((s) => s.id === acti.id)} key={acti.id} data={acti} />)}
       </CardPrincipal>
     </CardLocation>
   );

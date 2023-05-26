@@ -3,9 +3,9 @@ import { calculateDiffHours, formatTimeRange } from '../../../utils/masks';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import RegisterActivityButton from '../../../components/RegisterActivityButton';
 
-export default function Activity({ data }) {
+export default function Activity({ data, subscribed }) {
   return (
-    <Card height={calculateDiffHours(data.endsAt, data.startsAt) * 80}>
+    <Card height={calculateDiffHours(data.endsAt, data.startsAt) * 80} subscribed={subscribed}>
       <ContainerNameTime>
         <Name>{data.name}</Name>
         <Time>{formatTimeRange(data.startsAt, data.endsAt)}</Time>
@@ -28,7 +28,7 @@ export default function Activity({ data }) {
 const Card = styled.div`
     width: 265px;
     height: ${props => `${props.height}px`};
-    background-color: #F1F1F1;
+    background-color: ${props => props.subscribed ? 'green' : '#F1F1F1'};
     border-radius: 5px;
     margin-bottom: 10px;
     display: flex;

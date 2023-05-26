@@ -5,7 +5,7 @@ import LocationCard from './LocationCard';
 
 export default function Locations({ dateSelected }) {
   const [locations, setLocations] = useState(locationsActivitiesData);
-
+  console.log(locations);
   return (
     <Container selected={dateSelected}>
       {locations && locations.map(local => <LocationCard key={local.id} data={local} />)}
