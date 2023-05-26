@@ -6,7 +6,7 @@ export default function RegisterActivityButton({ activity }) {
   return (
     <>
       <IoLogInOutline color='#078632' size={23} />
-      <Vacancies>{`${available} vagas id${id}`}</Vacancies>
+      <Vacancies>{`${available} vagas`}</Vacancies>
     </>
   );}
 
