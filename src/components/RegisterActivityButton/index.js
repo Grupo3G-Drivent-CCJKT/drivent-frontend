@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import useCreateRegister from '../../hooks/api/useCreateRegister';
 import { toast } from 'react-toastify';
 
-export default function RegisterActivityButton({ activity }) {
+export default function RegisterActivityButton({ activity, updateSubscriptions }) {
   const { available, id } = activity;
   const { createRegister } = useCreateRegister();
 
@@ -11,6 +11,7 @@ export default function RegisterActivityButton({ activity }) {
     try {
       await createRegister(id);
       toast('Inscrição realizada com sucesso!');
+      updateSubscriptions();
     } catch (error) {
       toast(`Houve um erro na sua inscrição. ${error.response.data.message}`);
     }
