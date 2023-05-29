@@ -18,7 +18,7 @@ export default function LocationCard({ data }) {
     <CardLocation>
       <Title variant='h6'>{data?.name}</Title>
       <CardPrincipal>
-        {activities && activities.map(acti => <Activity subscribed={subscriptions?.find((s) => s.id === acti.id)} key={acti.id} data={acti} />)}
+        {activities && activities.map(acti => <Activity subscribed={subscriptions?.find((s) => s.activityId === acti.id)} key={acti.id} data={acti} />)}
       </CardPrincipal>
     </CardLocation>
   );

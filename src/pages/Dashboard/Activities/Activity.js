@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { calculateDiffHours, formatTimeRange } from '../../../utils/masks';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
 import RegisterActivityButton from '../../../components/RegisterActivityButton';
 
 export default function Activity({ data, subscribed }) {
@@ -11,9 +12,14 @@ export default function Activity({ data, subscribed }) {
         <Time>{formatTimeRange(data.startsAt, data.endsAt)}</Time>
       </ContainerNameTime>
       <ContainerIcon available={data.available > 0}>
-        {data.available > 0 ? (
+        {subscribed ? (
+          <>
+            <AiOutlineCheckCircle color='#078632' size={23} />
+            <Subscribed>{'Inscrito'}</Subscribed>
+          </>
+        ) : data.available > 0 ? (
           <RegisterActivityButton activity={data}></RegisterActivityButton>
-        ):(
+        ) : (
           <>
             <IoCloseCircleOutline color='#CC6666' size={23} />
             <Soldout>{'Esgotado'}</Soldout>
@@ -28,7 +34,7 @@ export default function Activity({ data, subscribed }) {
 const Card = styled.div`
     width: 265px;
     height: ${props => `${props.height}px`};
-    background-color: ${props => props.subscribed ? 'green' : '#F1F1F1'};
+    background-color: ${props => props.subscribed ? '#D0FFDB' : '#F1F1F1'};
     border-radius: 5px;
     margin-bottom: 10px;
     display: flex;
@@ -70,7 +76,7 @@ const ContainerIcon = styled.div`
     align-items: center;
     flex-direction: column;
     :hover {
-      cursor: ${props => props.available ? 'pointer' : 'not-allowed' };
+      cursor: ${props => props.available ? 'pointer' : 'not-allowed'};
     };
     
 `;
@@ -81,4 +87,12 @@ const Soldout = styled.p`
     line-height: 13px;
     text-align: center;
     color: #CC6666;
+`;
+
+const Subscribed = styled.p`
+    font-family: 'Roboto';
+    font-size: 11px;
+    line-height: 13px;
+    text-align: center;
+    color: #078632;
 `;
