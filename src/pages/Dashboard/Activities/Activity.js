@@ -4,7 +4,7 @@ import { IoCloseCircleOutline } from 'react-icons/io5';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import RegisterActivityButton from '../../../components/RegisterActivityButton';
 
-export default function Activity({ data, subscribed }) {
+export default function Activity({ data, subscribed, updateSubscriptions }) {
   return (
     <Card height={calculateDiffHours(data.endsAt, data.startsAt) * 80} subscribed={subscribed}>
       <ContainerNameTime>
@@ -18,7 +18,7 @@ export default function Activity({ data, subscribed }) {
             <Subscribed>{'Inscrito'}</Subscribed>
           </>
         ) : data.available > 0 ? (
-          <RegisterActivityButton activity={data}></RegisterActivityButton>
+          <RegisterActivityButton updateSubscriptions={updateSubscriptions} activity={data}></RegisterActivityButton>
         ) : (
           <>
             <IoCloseCircleOutline color='#CC6666' size={23} />

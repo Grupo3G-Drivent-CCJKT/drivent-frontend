@@ -3,7 +3,7 @@ import Activity from './Activity';
 import useGetSubscriptions from '../../../hooks/api/useGetSubscriptions';
 
 export default function LocationCard({ data }) {
-  const { subscriptions } = useGetSubscriptions();
+  const { subscriptions, updateSubscriptions } = useGetSubscriptions();
   
   const activities = data.activities.sort((a, b) => {
     if (a.startsAt > b.startsAt) {
@@ -18,7 +18,7 @@ export default function LocationCard({ data }) {
     <CardLocation>
       <Title variant='h6'>{data?.name}</Title>
       <CardPrincipal>
-        {activities && activities.map(acti => <Activity subscribed={subscriptions?.find((s) => s.activityId === acti.id)} key={acti.id} data={acti} />)}
+        {activities && activities.map(acti => <Activity updateSubscriptions={updateSubscriptions} subscribed={subscriptions?.find((s) => s.activityId === acti.id)} key={acti.id} data={acti} />)}
       </CardPrincipal>
     </CardLocation>
   );

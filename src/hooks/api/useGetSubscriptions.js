@@ -7,9 +7,11 @@ export default function useGetSubscriptions() {
 
   const {
     data: subscriptions,
+    act: updateSubscriptions
   } = useAsync(() => activitiesApi.findSubscribedActivities(token), true);
 
   return {
     subscriptions,
+    updateSubscriptions
   };
 }
